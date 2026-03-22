@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "skills": {
+    "cucumber-gherkin": {
+      "source": "el-feo/ai-context",
+      "sourceType": "github",
+      "computedHash": "1ada9c5433b10f7318b28cca78defb3d93ea6810e8172a230465521835015213"
+    },
+    "git-commit": {
+      "source": "github/awesome-copilot",
+      "sourceType": "github",
+      "computedHash": "2607fc60629b82b257136dd2a7a373f0a4466c0b49df7746d845d59313c99b21"
+    },
+    "nodejs-backend-patterns": {
+      "source": "wshobson/agents",
+      "sourceType": "github",
+      "computedHash": "47f9ab40a7ddedd69089da1390080735f6715356916d6fc43f525522887d7dfe"
+    },
+    "vercel-react-best-practices": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "computedHash": "e218e50fe7057a4db91390e579c7db5aafac2394c31a3d8e5fa9444c8fa00726"
+    }
+  }
+}
