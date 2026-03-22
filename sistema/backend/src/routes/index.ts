@@ -1,14 +1,11 @@
 import { Router } from 'express';
 import healthRoutes from './health.routes';
+import questionRoutes from './question.routes';
 
 const router = Router();
 
 router.use('/health', healthRoutes);
+router.use('/questions', questionRoutes);
 
-// Future routes (to be added as features are implemented):
-// router.use('/questions', questionsRoutes);
-// router.use('/exams', examsRoutes);
-// router.use('/proofs', proofsRoutes);
-// router.use('/grading', gradingRoutes);
 
 export default router;

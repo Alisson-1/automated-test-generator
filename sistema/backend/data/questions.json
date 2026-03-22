@@ -1,0 +1,20 @@
+[
+  {
+    "id": "2794b4b5-c725-4d84-bf96-8df8cb523a4a",
+    "statement": "What is 2+2?",
+    "alternatives": [
+      {
+        "id": "2794b4b5-c725-4d84-bf96-8df8cb523a4a-0",
+        "description": "3",
+        "correct": false
+      },
+      {
+        "id": "2794b4b5-c725-4d84-bf96-8df8cb523a4a-1",
+        "description": "4",
+        "correct": true
+      }
+    ],
+    "createdAt": "2026-03-22T15:18:42.298Z",
+    "updatedAt": "2026-03-22T15:18:42.298Z"
+  }
+]
