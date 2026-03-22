@@ -1,5 +1,18 @@
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { AppLayout } from './modules/layout/views/AppLayout';
 import HomeView from './modules/home/views/HomeView';
 
 export default function App() {
-  return <HomeView />;
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route element={<AppLayout />}>
+          <Route index element={<Navigate to="/questions" replace />} />
+          <Route path="/questions" element={<HomeView />} />
+          <Route path="/exams" element={<div className="text-slate-500">Exams — coming soon</div>} />
+          <Route path="/grading" element={<div className="text-slate-500">Grading — coming soon</div>} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
 }
