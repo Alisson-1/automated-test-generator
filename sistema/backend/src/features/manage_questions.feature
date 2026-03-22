@@ -189,3 +189,34 @@ Feature: Manage Questions
     When the teacher sends a PATCH request to the first alternative of the last created question with correct false and description "Option A updated"
     Then the response status should be 200
     And the first alternative of the response question should still be correct
+
+  Scenario: Successfully delete a question
+    Given a question already exists with statement "A question to be fully deleted"
+    When the teacher deletes the last created question
+    Then the response status should be 204
+    And the last created question should no longer exist in the repository
+
+  Scenario: Fail to delete a question that does not exist
+    When the teacher sends a DELETE request to "/api/questions/non-existent-id"
+    Then the response status should be 404
+
+  Scenario: Successfully delete a non-correct alternative
+    Given a question with 3 alternatives already exists
+    When the teacher deletes the last non-correct alternative of the last created question
+    Then the response status should be 200
+    And the response question should have 2 alternatives
+
+  Scenario: Fail to delete the correct alternative
+    Given a question already exists with statement "A question whose correct alternative is protected"
+    When the teacher deletes the correct alternative of the last created question
+    Then the response status should be 400
+
+  Scenario: Fail to delete an alternative when only 2 remain
+    Given a question already exists with statement "A question with minimum alternatives to delete"
+    When the teacher deletes the last non-correct alternative of the last created question
+    Then the response status should be 400
+
+  Scenario: Fail to delete a non-existent alternative
+    Given a question already exists with statement "A question for alternative deletion lookup"
+    When the teacher sends a DELETE request to "/api/questions/:id/alternatives/non-existent-alt-id"
+    Then the response status should be 404

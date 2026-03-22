@@ -60,4 +60,7 @@ router.patch('/:id', validateBody(updateQuestionSchema), questionController.upda
 router.patch('/:id/statement', validateBody(updateStatementSchema), questionController.updateStatement);
 router.patch('/:id/alternatives/:altId', validateBody(updateAlternativeDescriptionSchema), questionController.updateAlternativeDescription);
 
+router.delete('/:id', questionController.deleteQuestion);
+router.delete('/:id/alternatives/:altId', questionController.deleteAlternative);
+
 export default router;

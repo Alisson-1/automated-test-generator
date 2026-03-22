@@ -43,4 +43,22 @@ export class QuestionController {
       next(error);
     }
   };
+
+  deleteQuestion = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      this.service.deleteQuestion(req.params.id);
+      res.status(204).send();
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  deleteAlternative = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const question = this.service.deleteAlternative(req.params.id, req.params.altId);
+      res.json({ status: 'success', data: question });
+    } catch (error) {
+      next(error);
+    }
+  };
 }

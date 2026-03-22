@@ -120,4 +120,32 @@ export class QuestionService {
       updatedAt: now,
     }))!;
   }
+
+  deleteQuestion(id: string): void {
+    const deletedQuestion = this.repository.delete(id);
+    if (!deletedQuestion) throw new NotFoundError('Question not found');
+  }
+
+  deleteAlternative(questionId: string, altId: string): Question {
+    const existingQuestion = this.repository.findById(questionId);
+    if (!existingQuestion) throw new NotFoundError('Question not found');
+
+    const alternative = existingQuestion.alternatives.find((a) => a.id === altId);
+    if (!alternative) throw new NotFoundError('Alternative not found');
+
+    if (alternative.correct) {
+      throw new ValidationError('Cannot remove the correct alternative');
+    }
+
+    if (existingQuestion.alternatives.length <= 2) {
+      throw new ValidationError('Cannot remove alternative: question must retain at least 2 alternatives');
+    }
+
+    const now = new Date().toISOString();
+    return this.repository.update(questionId, (q) => ({
+      ...q,
+      alternatives: q.alternatives.filter((a) => a.id !== altId),
+      updatedAt: now,
+    }))!;
+  }
 }

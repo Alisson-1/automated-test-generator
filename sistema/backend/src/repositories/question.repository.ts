@@ -60,4 +60,13 @@ export class QuestionRepository {
     writeAll(questions);
     return questions[index];
   }
+
+  delete(id: string): boolean {
+    const questions = readAll();
+    const index = questions.findIndex((q) => q.id === id);
+    if (index === -1) return false;
+    questions.splice(index, 1);
+    writeAll(questions);
+    return true;
+  }
 }

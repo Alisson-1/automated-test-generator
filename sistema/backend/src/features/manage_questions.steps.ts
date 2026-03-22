@@ -124,3 +124,48 @@ Then('the first alternative of the response question should still be correct', f
   assert.ok(alternatives && alternatives.length > 0, 'Response question should have alternatives');
   assert.strictEqual(alternatives[0].correct, true, 'The first alternative should still be marked as correct');
 });
+
+Given('a question with {int} alternatives already exists', async function (count: number) {
+  const alternatives = Array.from({ length: count }, (_, i) => ({
+    description: `Option ${String.fromCharCode(65 + i)}`,
+    correct: i === 0,
+  }));
+  const res = await request(app)
+    .post('/api/questions')
+    .send({ statement: `A question with ${count} alternatives`, alternatives })
+    .set('Content-Type', 'application/json');
+  lastCreatedQuestionId = (res.body.data as Question).id;
+});
+
+When('the teacher deletes the last created question', async function () {
+  const res = await request(app).delete(`/api/questions/${lastCreatedQuestionId}`);
+  response = { status: res.status, body: res.body };
+});
+
+When('the teacher sends a DELETE request to {string}', async function (endpointTemplate: string) {
+  const endpoint = endpointTemplate.replace(':id', lastCreatedQuestionId);
+  const res = await request(app).delete(endpoint);
+  response = { status: res.status, body: res.body };
+});
+
+When('the teacher deletes the last non-correct alternative of the last created question', async function () {
+  const questions = JSON.parse(fs.readFileSync(DATA_FILE, 'utf-8')) as Question[];
+  const question = questions.find((q) => q.id === lastCreatedQuestionId)!;
+  const alt = [...question.alternatives].reverse().find((a) => !a.correct)!;
+  const res = await request(app).delete(`/api/questions/${lastCreatedQuestionId}/alternatives/${alt.id}`);
+  response = { status: res.status, body: res.body };
+});
+
+When('the teacher deletes the correct alternative of the last created question', async function () {
+  const questions = JSON.parse(fs.readFileSync(DATA_FILE, 'utf-8')) as Question[];
+  const question = questions.find((q) => q.id === lastCreatedQuestionId)!;
+  const alt = question.alternatives.find((a) => a.correct)!;
+  const res = await request(app).delete(`/api/questions/${lastCreatedQuestionId}/alternatives/${alt.id}`);
+  response = { status: res.status, body: res.body };
+});
+
+Then('the last created question should no longer exist in the repository', function () {
+  const questions = JSON.parse(fs.readFileSync(DATA_FILE, 'utf-8')) as Question[];
+  const found = questions.find((q) => q.id === lastCreatedQuestionId);
+  assert.strictEqual(found, undefined, 'Question should have been deleted from the repository');
+});
