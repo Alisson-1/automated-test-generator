@@ -59,8 +59,6 @@ frontend/src/
 
 ## Commands
 
-> Fill in once the project is scaffolded.
-
 ```bash
 # From repo root (sistema/)
 npm run dev          # start frontend + backend via Docker Compose
@@ -107,3 +105,4 @@ Unit tests (Jest) cover services and utility functions (e.g., PDF layout, CSV pa
 | `git-commit` | Committing changes — generates conventional commit messages from the diff |
 | `nodejs-backend-patterns` | Creating/modifying backend code — layered architecture, middleware, error handling, validation |
 | `vercel-react-best-practices` | Writing React components — re-render optimization, bundle size, async patterns. **Note:** ignore `server-*` rules (Next.js/RSC only); focus on `rerender-*`, `async-*`, `bundle-*`, `js-*` |
+| `cucumber-gherkin` | Writing acceptance tests — `.feature` files in Gherkin, step definitions with Cucumber.js, test setup/teardown |

@@ -1,0 +1,15 @@
+{
+  "name": "sistema",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "docker-compose up",
+    "test": "npm run test --workspace=backend",
+    "test:e2e": "npm run test:cucumber --workspace=backend",
+    "install:all": "npm install --workspace=backend"
+  },
+  "workspaces": [
+    "backend",
+    "frontend"
+  ]
+}
