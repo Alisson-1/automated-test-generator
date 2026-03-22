@@ -51,4 +51,13 @@ export class QuestionRepository {
   findById(id: string): Question | null {
     return readAll().find((q) => q.id === id) ?? null;
   }
+
+  update(id: string, updater: (q: Question) => Question): Question | null {
+    const questions = readAll();
+    const index = questions.findIndex((q) => q.id === id);
+    if (index === -1) return null;
+    questions[index] = updater(questions[index]);
+    writeAll(questions);
+    return questions[index];
+  }
 }

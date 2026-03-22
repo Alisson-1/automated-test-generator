@@ -17,7 +17,25 @@ const createQuestionSchema = z.object({
   alternatives: z.array(alternativeQuestionSchema).min(2, 'At least 2 alternatives are required'),
 });
 
-function validateCreateQuestionBody(schema: z.ZodTypeAny) {
+
+const updateQuestionSchema = z
+  .object({
+    statement: z.string().min(1, 'Statement must not be empty').optional(),
+    alternatives: z.array(alternativeQuestionSchema).min(2, 'At least 2 alternatives are required').optional(),
+  })
+  .refine((data) => data.statement !== undefined || data.alternatives !== undefined, {
+    message: 'At least one field (statement or alternatives) must be provided',
+  });
+
+const updateStatementSchema = z.object({
+  statement: z.string().min(1, 'Statement is required'),
+});
+
+const updateAlternativeDescriptionSchema = z.object({
+  description: z.string().min(1, 'Description is required'),
+});
+
+function validateBody(schema: z.ZodTypeAny) {
   return (req: Request, _res: Response, next: NextFunction) => {
     const result = schema.safeParse(req.body);
     if (!result.success) {
@@ -36,6 +54,10 @@ const questionRepository = new QuestionRepository();
 const questionService = new QuestionService(questionRepository);
 const questionController = new QuestionController(questionService);
 
-router.post('/', validateCreateQuestionBody(createQuestionSchema), questionController.create);
+router.post('/', validateBody(createQuestionSchema), questionController.create);
+
+router.patch('/:id', validateBody(updateQuestionSchema), questionController.updateQuestion);
+router.patch('/:id/statement', validateBody(updateStatementSchema), questionController.updateStatement);
+router.patch('/:id/alternatives/:altId', validateBody(updateAlternativeDescriptionSchema), questionController.updateAlternativeDescription);
 
 export default router;

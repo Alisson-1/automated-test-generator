@@ -16,3 +16,16 @@ export interface CreateQuestionDTO {
   statement: string;
   alternatives: { description: string; correct: boolean }[];
 }
+
+export interface UpdateQuestionDTO {
+  statement?: string;
+  alternatives?: { description: string; correct: boolean }[];
+}
+
+export interface UpdateStatementDTO {
+  statement: string;
+}
+
+export interface UpdateAlternativeDescriptionDTO {
+  description: string;
+}

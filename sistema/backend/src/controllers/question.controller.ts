@@ -12,4 +12,35 @@ export class QuestionController {
       next(error);
     }
   };
+
+  updateQuestion = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const question = this.service.updateQuestion(req.params.id, req.body);
+      res.json({ status: 'success', data: question });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  updateStatement = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const question = this.service.updateStatement(req.params.id, req.body.statement);
+      res.json({ status: 'success', data: question });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  updateAlternativeDescription = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const question = this.service.updateAlternativeDescription(
+        req.params.id,
+        req.params.altId,
+        req.body.description,
+      );
+      res.json({ status: 'success', data: question });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
