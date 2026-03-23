@@ -66,7 +66,7 @@ export const questionsApi = {
     }),
 
   deleteQuestion: (id: string) =>
-    request<void>(`${BASE}/${id}`, { method: 'DELETE' }),
+    request<{ unlinkedExams: string[]; deletedExams: string[] }>(`${BASE}/${id}`, { method: 'DELETE' }),
 
   deleteAlternative: (questionId: string, altId: string) =>
     request<Question>(`${BASE}/${questionId}/alternatives/${altId}`, { method: 'DELETE' }),

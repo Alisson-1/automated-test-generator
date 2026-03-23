@@ -1,20 +1,209 @@
 [
   {
-    "id": "2794b4b5-c725-4d84-bf96-8df8cb523a4a",
-    "statement": "What is 2+2?",
+    "id": "cb5dfb16-fe7c-4f06-88f2-d9f10ad48ab0",
+    "statement": "Which planet is closest to the Sun?",
     "alternatives": [
       {
-        "id": "2794b4b5-c725-4d84-bf96-8df8cb523a4a-0",
-        "description": "3",
+        "id": "cb5dfb16-fe7c-4f06-88f2-d9f10ad48ab0-0",
+        "description": "Venus",
         "correct": false
       },
       {
-        "id": "2794b4b5-c725-4d84-bf96-8df8cb523a4a-1",
-        "description": "4",
+        "id": "cb5dfb16-fe7c-4f06-88f2-d9f10ad48ab0-1",
+        "description": "Earth",
+        "correct": false
+      },
+      {
+        "id": "cb5dfb16-fe7c-4f06-88f2-d9f10ad48ab0-2",
+        "description": "Mercury",
         "correct": true
       }
     ],
-    "createdAt": "2026-03-22T15:18:42.298Z",
-    "updatedAt": "2026-03-22T15:18:42.298Z"
+    "createdAt": "2026-03-23T11:11:57.468Z",
+    "updatedAt": "2026-03-23T11:11:57.468Z"
+  },
+  {
+    "id": "532903b5-da49-4f87-822b-99d7b06a2a56",
+    "statement": "What is the chemical symbol for water?",
+    "alternatives": [
+      {
+        "id": "532903b5-da49-4f87-822b-99d7b06a2a56-0",
+        "description": "CO2",
+        "correct": false
+      },
+      {
+        "id": "532903b5-da49-4f87-822b-99d7b06a2a56-1",
+        "description": "H2O",
+        "correct": true
+      },
+      {
+        "id": "532903b5-da49-4f87-822b-99d7b06a2a56-2",
+        "description": "O2",
+        "correct": false
+      }
+    ],
+    "createdAt": "2026-03-23T11:11:57.469Z",
+    "updatedAt": "2026-03-23T11:11:57.469Z"
+  },
+  {
+    "id": "f295cc19-53ea-4112-b768-dcab24200ba3",
+    "statement": "How many sides does a triangle have?",
+    "alternatives": [
+      {
+        "id": "f295cc19-53ea-4112-b768-dcab24200ba3-0",
+        "description": "2",
+        "correct": false
+      },
+      {
+        "id": "f295cc19-53ea-4112-b768-dcab24200ba3-1",
+        "description": "3",
+        "correct": true
+      },
+      {
+        "id": "f295cc19-53ea-4112-b768-dcab24200ba3-2",
+        "description": "4",
+        "correct": false
+      }
+    ],
+    "createdAt": "2026-03-23T11:11:57.470Z",
+    "updatedAt": "2026-03-23T11:11:57.470Z"
+  },
+  {
+    "id": "13ee94a5-efdf-4672-9955-ac8ef0892d89",
+    "statement": "Who wrote the play Romeo and Juliet?",
+    "alternatives": [
+      {
+        "id": "13ee94a5-efdf-4672-9955-ac8ef0892d89-0",
+        "description": "Charles Dickens",
+        "correct": false
+      },
+      {
+        "id": "13ee94a5-efdf-4672-9955-ac8ef0892d89-1",
+        "description": "William Shakespeare",
+        "correct": true
+      },
+      {
+        "id": "13ee94a5-efdf-4672-9955-ac8ef0892d89-2",
+        "description": "Jane Austen",
+        "correct": false
+      }
+    ],
+    "createdAt": "2026-03-23T11:11:57.471Z",
+    "updatedAt": "2026-03-23T11:11:57.471Z"
+  },
+  {
+    "id": "97836506-bb73-4f31-b513-b432b47c84f8",
+    "statement": "What is the capital of Brazil?",
+    "alternatives": [
+      {
+        "id": "97836506-bb73-4f31-b513-b432b47c84f8-0",
+        "description": "São Paulo",
+        "correct": false
+      },
+      {
+        "id": "97836506-bb73-4f31-b513-b432b47c84f8-1",
+        "description": "Rio de Janeiro",
+        "correct": false
+      },
+      {
+        "id": "97836506-bb73-4f31-b513-b432b47c84f8-2",
+        "description": "Brasília",
+        "correct": true
+      }
+    ],
+    "createdAt": "2026-03-23T11:11:57.472Z",
+    "updatedAt": "2026-03-23T11:11:57.472Z"
+  },
+  {
+    "id": "1f161fe6-acd1-4867-be4e-59c801bd7936",
+    "statement": "Which gas do plants absorb during photosynthesis?",
+    "alternatives": [
+      {
+        "id": "1f161fe6-acd1-4867-be4e-59c801bd7936-0",
+        "description": "Oxygen",
+        "correct": false
+      },
+      {
+        "id": "1f161fe6-acd1-4867-be4e-59c801bd7936-1",
+        "description": "Carbon dioxide",
+        "correct": true
+      },
+      {
+        "id": "1f161fe6-acd1-4867-be4e-59c801bd7936-2",
+        "description": "Nitrogen",
+        "correct": false
+      }
+    ],
+    "createdAt": "2026-03-23T11:11:57.473Z",
+    "updatedAt": "2026-03-23T11:11:57.473Z"
+  },
+  {
+    "id": "56742667-24f1-4822-9840-3d3b343337de",
+    "statement": "What is the speed of light approximately equal to?",
+    "alternatives": [
+      {
+        "id": "56742667-24f1-4822-9840-3d3b343337de-0",
+        "description": "300,000 km/s",
+        "correct": true
+      },
+      {
+        "id": "56742667-24f1-4822-9840-3d3b343337de-1",
+        "description": "150,000 km/s",
+        "correct": false
+      },
+      {
+        "id": "56742667-24f1-4822-9840-3d3b343337de-2",
+        "description": "30,000 km/s",
+        "correct": false
+      }
+    ],
+    "createdAt": "2026-03-23T11:11:57.475Z",
+    "updatedAt": "2026-03-23T11:11:57.475Z"
+  },
+  {
+    "id": "6f1b6a27-e42e-4b40-a7a8-faef37381976",
+    "statement": "Which data structure follows the LIFO principle?",
+    "alternatives": [
+      {
+        "id": "6f1b6a27-e42e-4b40-a7a8-faef37381976-0",
+        "description": "Queue",
+        "correct": false
+      },
+      {
+        "id": "6f1b6a27-e42e-4b40-a7a8-faef37381976-1",
+        "description": "Stack",
+        "correct": true
+      },
+      {
+        "id": "6f1b6a27-e42e-4b40-a7a8-faef37381976-2",
+        "description": "Linked List",
+        "correct": false
+      }
+    ],
+    "createdAt": "2026-03-23T11:11:57.475Z",
+    "updatedAt": "2026-03-23T11:11:57.475Z"
+  },
+  {
+    "id": "99b9c10e-aa07-446e-87cb-78be2db217aa",
+    "statement": "What does HTML stand for?",
+    "alternatives": [
+      {
+        "id": "99b9c10e-aa07-446e-87cb-78be2db217aa-0",
+        "description": "HyperText Markup Language",
+        "correct": true
+      },
+      {
+        "id": "99b9c10e-aa07-446e-87cb-78be2db217aa-1",
+        "description": "HighText Machine Language",
+        "correct": false
+      },
+      {
+        "id": "99b9c10e-aa07-446e-87cb-78be2db217aa-2",
+        "description": "HyperText and links Markup Language",
+        "correct": false
+      }
+    ],
+    "createdAt": "2026-03-23T11:11:57.476Z",
+    "updatedAt": "2026-03-23T11:11:57.476Z"
   }
 ]

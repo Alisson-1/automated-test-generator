@@ -64,8 +64,8 @@ export class QuestionController {
 
   deleteQuestion = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      this.service.deleteQuestion(req.params.id);
-      res.status(204).send();
+      const result = this.service.deleteQuestion(req.params.id);
+      res.json({ status: 'success', data: result });
     } catch (error) {
       next(error);
     }

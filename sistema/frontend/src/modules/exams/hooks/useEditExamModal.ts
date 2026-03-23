@@ -1,16 +1,26 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
+import type { Question } from '@/service/endpoint/questions';
 import type { UpdateExamInput, IdentifierMode, EditExamTarget } from '../types';
+import { computeCombinations, formatCombinations } from './useExams';
 
 interface UseEditExamModalProps {
   target: EditExamTarget;
+  allQuestions: Question[];
   onSave: (examId: string, data: UpdateExamInput) => void;
 }
 
-export function useEditExamModal({ target, onSave }: UseEditExamModalProps) {
+export function useEditExamModal({ target, allQuestions, onSave }: UseEditExamModalProps) {
   const [title, setTitle] = useState(target.title);
   const [questionIds, setQuestionIds] = useState<string[]>(target.questionIds);
   const [identifierMode, setIdentifierMode] = useState<IdentifierMode>(target.identifierMode);
   const [error, setError] = useState<string | null>(null);
+
+  const combinations = useMemo(
+    () => computeCombinations(allQuestions, questionIds),
+    [allQuestions, questionIds],
+  );
+
+  const combinationsLabel = useMemo(() => formatCombinations(combinations), [combinations]);
 
   const toggleQuestion = useCallback((id: string) => {
     setQuestionIds((prev) =>
@@ -42,6 +52,8 @@ export function useEditExamModal({ target, onSave }: UseEditExamModalProps) {
     identifierMode,
     setIdentifierMode,
     error,
+    combinations,
+    combinationsLabel,
     toggleQuestion,
     handleSubmit,
   };

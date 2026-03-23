@@ -106,10 +106,18 @@ export function useQuestions() {
   const handleDeleteQuestion = useCallback(async (questionId: string) => {
     notify('Deleting...');
     try {
-      await questionsApi.deleteQuestion(questionId);
+      const { unlinkedExams, deletedExams } = await questionsApi.deleteQuestion(questionId);
       setQuestions((prev) => prev.filter((q) => q.id !== questionId));
       setDeleteTarget(null);
-      notify('Question deleted!');
+
+      const parts: string[] = ['Question deleted!'];
+      if (unlinkedExams.length > 0) {
+        parts.push(`Removed from: ${unlinkedExams.join(', ')}.`);
+      }
+      if (deletedExams.length > 0) {
+        parts.push(`Deleted (no remaining questions): ${deletedExams.join(', ')}.`);
+      }
+      notify(parts.join(' '));
     } catch (e: unknown) {
       notify((e as Error).message ?? 'Failed to delete', 'error');
     }

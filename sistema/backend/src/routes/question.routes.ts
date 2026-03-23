@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { QuestionController } from '../controllers/question.controller';
 import { QuestionService } from '../services/question.service';
 import { QuestionRepository } from '../repositories/question.repository';
+import { ExamRepository } from '../repositories/exam.repository';
 import { ValidationError } from '../utils/errors';
 
 const router = Router();
@@ -60,7 +61,8 @@ function validateBody(schema: z.ZodTypeAny) {
 }
 
 const questionRepository = new QuestionRepository();
-const questionService = new QuestionService(questionRepository);
+const examRepository = new ExamRepository();
+const questionService = new QuestionService(questionRepository, examRepository);
 const questionController = new QuestionController(questionService);
 
 router.get('/', questionController.getAll);

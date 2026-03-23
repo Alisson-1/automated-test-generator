@@ -1,10 +1,19 @@
 import { randomUUID } from 'crypto';
 import { QuestionRepository } from '../repositories/question.repository';
+import { ExamRepository } from '../repositories/exam.repository';
 import { CreateQuestionDTO, UpdateQuestionDTO, Question, BulkCreateResult } from '../types/question.types';
 import { ConflictError, NotFoundError, ValidationError } from '../utils/errors';
 
+export interface DeleteQuestionResult {
+  unlinkedExams: string[];
+  deletedExams: string[];
+}
+
 export class QuestionService {
-  constructor(private repository: QuestionRepository) {}
+  constructor(
+    private repository: QuestionRepository,
+    private examRepository: ExamRepository,
+  ) {}
 
   getAll(): Question[] {
     return this.repository.findAll();
@@ -148,9 +157,30 @@ export class QuestionService {
     }))!;
   }
 
-  deleteQuestion(id: string): void {
-    const deletedQuestion = this.repository.delete(id);
-    if (!deletedQuestion) throw new NotFoundError('Question not found');
+  deleteQuestion(id: string): DeleteQuestionResult {
+    const question = this.repository.findById(id);
+    if (!question) throw new NotFoundError('Question not found');
+
+    const allExams = this.examRepository.findAll();
+    const affectedExams = allExams.filter((e) => e.questionIds.includes(id));
+
+    const unlinkedExams: string[] = [];
+    const deletedExams: string[] = [];
+
+    const now = new Date().toISOString();
+    for (const exam of affectedExams) {
+      const remaining = exam.questionIds.filter((qId) => qId !== id);
+      if (remaining.length === 0) {
+        this.examRepository.delete(exam.id);
+        deletedExams.push(exam.title);
+      } else {
+        this.examRepository.update(exam.id, (e) => ({ ...e, questionIds: remaining, updatedAt: now }));
+        unlinkedExams.push(exam.title);
+      }
+    }
+
+    this.repository.delete(id);
+    return { unlinkedExams, deletedExams };
   }
 
   deleteAlternative(questionId: string, altId: string): Question {

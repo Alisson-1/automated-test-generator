@@ -1,6 +1,5 @@
 import { Pencil, Trash2, Hash, Layers } from 'lucide-react';
 import { useExamCard } from '../hooks/useExamCard';
-import { computeCombinations, formatCombinations } from '../hooks/useExams';
 import type { Exam } from '../types';
 import type { Question } from '@/service/endpoint/questions';
 
@@ -12,8 +11,7 @@ interface ExamCardProps {
 }
 
 export function ExamCard({ exam, allQuestions, onEdit, onDelete }: ExamCardProps) {
-  const { formatDate } = useExamCard();
-  const combinations = computeCombinations(allQuestions, exam.questionIds);
+  const { combinations, combinationsLabel, formatDate } = useExamCard(exam, allQuestions);
 
   return (
     <div className="rounded-lg border border-slate-200 bg-white shadow-sm">
@@ -59,7 +57,7 @@ export function ExamCard({ exam, allQuestions, onEdit, onDelete }: ExamCardProps
         <div className="flex items-center gap-1.5 rounded-md border border-amber-100 bg-amber-50 px-3 py-2">
           <Layers className="h-3.5 w-3.5 shrink-0 text-amber-600" />
           <span className="text-xs text-amber-700">
-            <span className="font-semibold">{formatCombinations(combinations)}</span>
+            <span className="font-semibold">{combinationsLabel}</span>
             {' '}unique proof combination{combinations !== 1n ? 's' : ''}
           </span>
         </div>

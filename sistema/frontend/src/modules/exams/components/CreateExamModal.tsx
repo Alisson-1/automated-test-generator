@@ -1,7 +1,6 @@
 import { Layers } from 'lucide-react';
 import { Modal } from './Modal';
 import { useCreateExamModal } from '../hooks/useCreateExamModal';
-import { computeCombinations, formatCombinations } from '../hooks/useExams';
 import type { CreateExamInput } from '../types';
 import type { Question } from '@/service/endpoint/questions';
 
@@ -19,11 +18,10 @@ export function CreateExamModal({ allQuestions, onSave, onClose }: CreateExamMod
     identifierMode,
     setIdentifierMode,
     error,
+    combinationsLabel,
     toggleQuestion,
     handleSubmit,
-  } = useCreateExamModal({ onSave });
-
-  const combinations = computeCombinations(allQuestions, questionIds);
+  } = useCreateExamModal({ allQuestions, onSave });
 
   return (
     <Modal title="New Exam" onClose={onClose}>
@@ -92,7 +90,7 @@ export function CreateExamModal({ allQuestions, onSave, onClose }: CreateExamMod
           <div className="flex items-center gap-1.5 rounded-md border border-amber-100 bg-amber-50 px-3 py-2">
             <Layers className="h-3.5 w-3.5 shrink-0 text-amber-600" />
             <span className="text-xs text-amber-700">
-              <span className="font-semibold">{formatCombinations(combinations)}</span>
+              <span className="font-semibold">{combinationsLabel}</span>
               {' '}unique proof combinations
             </span>
           </div>
