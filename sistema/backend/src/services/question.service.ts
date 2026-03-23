@@ -6,14 +6,18 @@ import { ConflictError, NotFoundError, ValidationError } from '../utils/errors';
 export class QuestionService {
   constructor(private repository: QuestionRepository) {}
 
+  getAll(): Question[] {
+    return this.repository.findAll();
+  }
+
   create(data: CreateQuestionDTO): Question {
     if (!data.alternatives || data.alternatives.length < 2) {
       throw new ValidationError('A question must have at least 2 alternatives');
     }
 
-    const hasCorrectAlternative = data.alternatives.some((alt) => alt.correct);
-    if (!hasCorrectAlternative) {
-      throw new ValidationError('A question must have at least one correct alternative');
+    const correctCount = data.alternatives.filter((alt) => alt.correct).length;
+    if (correctCount !== 1) {
+      throw new ValidationError('A question must have exactly one correct alternative');
     }
 
     const descriptions = data.alternatives.map((alt) => alt.description.trim().toLowerCase());
@@ -54,8 +58,9 @@ export class QuestionService {
     if (newQuestionAlternatives.length < 2) {
       throw new ValidationError('A question must have at least 2 alternatives');
     }
-    if (!newQuestionAlternatives.some((a) => a.correct)) {
-      throw new ValidationError('A question must have at least one correct alternative');
+    const correctCount = newQuestionAlternatives.filter((a) => a.correct).length;
+    if (correctCount !== 1) {
+      throw new ValidationError('A question must have exactly one correct alternative');
     }
     const descriptions = newQuestionAlternatives.map((newAlternative) => newAlternative.description.trim().toLowerCase());
     if (descriptions.length !== new Set(descriptions).size) {

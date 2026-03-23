@@ -54,6 +54,7 @@ const questionRepository = new QuestionRepository();
 const questionService = new QuestionService(questionRepository);
 const questionController = new QuestionController(questionService);
 
+router.get('/', questionController.getAll);
 router.post('/', validateBody(createQuestionSchema), questionController.create);
 
 router.patch('/:id', validateBody(updateQuestionSchema), questionController.updateQuestion);

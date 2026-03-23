@@ -4,6 +4,15 @@ import { QuestionService } from '../services/question.service';
 export class QuestionController {
   constructor(private service: QuestionService) {}
 
+  getAll = async (_req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const questions = this.service.getAll();
+      res.json({ status: 'success', data: questions });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   create = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const question = this.service.create(req.body);
