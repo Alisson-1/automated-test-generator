@@ -6,6 +6,7 @@ import { EditStatementModal } from '../components/EditStatementModal';
 import { EditAlternativeModal } from '../components/EditAlternativeModal';
 import { DeleteQuestionModal } from '../components/DeleteQuestionModal';
 import { CreateQuestionModal } from '../components/CreateQuestionModal';
+import { AddAlternativeModal } from '../components/AddAlternativeModal';
 
 export default function QuestionsView() {
   const {
@@ -21,9 +22,12 @@ export default function QuestionsView() {
     setEditStatementTarget,
     editAlternativeTarget,
     setEditAlternativeTarget,
+    addAlternativeTarget,
+    setAddAlternativeTarget,
     deleteTarget,
     setDeleteTarget,
     handleCreateQuestion,
+    handleAddAlternative,
     handleUpdateStatement,
     handleUpdateAlternativeDescription,
     handleToggleCorrect,
@@ -54,6 +58,7 @@ export default function QuestionsView() {
         onEditAlternative={(questionId, altId, description) =>
           setEditAlternativeTarget({ questionId, altId, description })
         }
+        onAddAlternative={(questionId) => setAddAlternativeTarget({ questionId })}
         onToggleCorrect={handleToggleCorrect}
         onDeleteAlternative={handleDeleteAlternative}
       />
@@ -81,6 +86,14 @@ export default function QuestionsView() {
           initialDescription={editAlternativeTarget.description}
           onSave={handleUpdateAlternativeDescription}
           onClose={() => setEditAlternativeTarget(null)}
+        />
+      )}
+
+      {addAlternativeTarget && (
+        <AddAlternativeModal
+          questionId={addAlternativeTarget.questionId}
+          onSave={handleAddAlternative}
+          onClose={() => setAddAlternativeTarget(null)}
         />
       )}
 

@@ -126,6 +126,28 @@ export class QuestionService {
     }))!;
   }
 
+  addAlternative(questionId: string, data: { description: string; correct: boolean }): Question {
+    const existing = this.repository.findById(questionId);
+    if (!existing) throw new NotFoundError('Question not found');
+
+    const descriptionNormalized = data.description.trim().toLowerCase();
+    const hasDuplicate = existing.alternatives.some(
+      (a) => a.description.trim().toLowerCase() === descriptionNormalized,
+    );
+    if (hasDuplicate) throw new ValidationError('Alternative description must be unique within the question');
+
+    const newAlt = { id: randomUUID(), description: data.description.trim(), correct: data.correct };
+    const now = new Date().toISOString();
+
+    return this.repository.update(questionId, (q) => ({
+      ...q,
+      alternatives: data.correct
+        ? [...q.alternatives.map((a) => ({ ...a, correct: false })), newAlt]
+        : [...q.alternatives, newAlt],
+      updatedAt: now,
+    }))!;
+  }
+
   deleteQuestion(id: string): void {
     const deletedQuestion = this.repository.delete(id);
     if (!deletedQuestion) throw new NotFoundError('Question not found');

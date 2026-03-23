@@ -53,6 +53,15 @@ export class QuestionController {
     }
   };
 
+  addAlternative = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const question = this.service.addAlternative(req.params.id, req.body);
+      res.status(201).json({ status: 'success', data: question });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   deleteQuestion = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       this.service.deleteQuestion(req.params.id);

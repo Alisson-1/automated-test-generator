@@ -11,6 +11,7 @@ interface QuestionListProps {
   onEditStatement: (questionId: string, statement: string) => void;
   onDeleteQuestion: (question: Question) => void;
   onEditAlternative: (questionId: string, altId: string, description: string) => void;
+  onAddAlternative: (questionId: string) => void;
   onToggleCorrect: (question: Question, altId: string) => void;
   onDeleteAlternative: (question: Question, altId: string) => void;
 }
@@ -24,6 +25,7 @@ export function QuestionList({
   onEditStatement,
   onDeleteQuestion,
   onEditAlternative,
+  onAddAlternative,
   onToggleCorrect,
   onDeleteAlternative,
 }: QuestionListProps) {
@@ -72,6 +74,7 @@ export function QuestionList({
               onEditStatement={onEditStatement}
               onDeleteQuestion={onDeleteQuestion}
               onEditAlternative={onEditAlternative}
+              onAddAlternative={onAddAlternative}
               onToggleCorrect={(altId) => onToggleCorrect(q, altId)}
               onDeleteAlternative={(altId) => onDeleteAlternative(q, altId)}
             />

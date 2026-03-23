@@ -1,4 +1,4 @@
-import { Pencil, Trash2 } from 'lucide-react';
+import { Pencil, Plus, Trash2 } from 'lucide-react';
 import { AlternativeItem } from './AlternativeItem';
 import { useQuestionCard } from '../hooks/useQuestionCard';
 import type { Question } from '../types';
@@ -8,6 +8,7 @@ interface QuestionCardProps {
   onEditStatement: (questionId: string, statement: string) => void;
   onDeleteQuestion: (question: Question) => void;
   onEditAlternative: (questionId: string, altId: string, description: string) => void;
+  onAddAlternative: (questionId: string) => void;
   onToggleCorrect: (altId: string) => void;
   onDeleteAlternative: (altId: string) => void;
 }
@@ -17,6 +18,7 @@ export function QuestionCard({
   onEditStatement,
   onDeleteQuestion,
   onEditAlternative,
+  onAddAlternative,
   onToggleCorrect,
   onDeleteAlternative,
 }: QuestionCardProps) {
@@ -67,6 +69,15 @@ export function QuestionCard({
             />
           ))}
         </div>
+
+        <button
+          type="button"
+          onClick={() => onAddAlternative(question.id)}
+          className="mt-2 flex items-center gap-1 text-xs font-medium text-blue-600 hover:text-blue-800 transition-colors"
+        >
+          <Plus className="h-3.5 w-3.5" />
+          Add alternative
+        </button>
 
         <p className="mt-3 text-xs text-slate-400">
           Created: {formatDate(question.createdAt)} | Updated: {formatDate(question.updatedAt)}

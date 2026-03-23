@@ -54,6 +54,12 @@ export const questionsApi = {
       body: JSON.stringify({ alternatives }),
     }),
 
+  addAlternative: (questionId: string, data: { description: string; correct: boolean }) =>
+    request<Question>(`${BASE}/${questionId}/alternatives`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
+
   deleteQuestion: (id: string) =>
     request<void>(`${BASE}/${id}`, { method: 'DELETE' }),
 

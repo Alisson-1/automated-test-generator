@@ -27,6 +27,11 @@ const updateQuestionSchema = z
     message: 'At least one field (statement or alternatives) must be provided',
   });
 
+const addAlternativeSchema = z.object({
+  description: z.string().min(1, 'Description is required'),
+  correct: z.boolean(),
+});
+
 const updateStatementSchema = z.object({
   statement: z.string().min(1, 'Statement is required'),
 });
@@ -57,6 +62,7 @@ const questionController = new QuestionController(questionService);
 router.get('/', questionController.getAll);
 router.post('/', validateBody(createQuestionSchema), questionController.create);
 
+router.post('/:id/alternatives', validateBody(addAlternativeSchema), questionController.addAlternative);
 router.patch('/:id', validateBody(updateQuestionSchema), questionController.updateQuestion);
 router.patch('/:id/statement', validateBody(updateStatementSchema), questionController.updateStatement);
 router.patch('/:id/alternatives/:altId', validateBody(updateAlternativeDescriptionSchema), questionController.updateAlternativeDescription);

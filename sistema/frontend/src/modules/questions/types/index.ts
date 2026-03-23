@@ -15,3 +15,7 @@ export interface EditAlternativeTarget {
   altId: string;
   description: string;
 }
+
+export interface AddAlternativeTarget {
+  questionId: string;
+}

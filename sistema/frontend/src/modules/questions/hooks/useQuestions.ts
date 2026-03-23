@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { questionsApi } from '@/service/endpoint/questions';
-import type { Question, CreateQuestionInput, EditStatementTarget, EditAlternativeTarget } from '../types';
+import type { Question, CreateQuestionInput, EditStatementTarget, EditAlternativeTarget, AddAlternativeTarget } from '../types';
 
 interface Notification {
   message: string;
@@ -15,6 +15,7 @@ export function useQuestions() {
 
   const [editStatementTarget, setEditStatementTarget] = useState<EditStatementTarget | null>(null);
   const [editAlternativeTarget, setEditAlternativeTarget] = useState<EditAlternativeTarget | null>(null);
+  const [addAlternativeTarget, setAddAlternativeTarget] = useState<AddAlternativeTarget | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Question | null>(null);
   const [showCreate, setShowCreate] = useState(false);
 
@@ -113,6 +114,21 @@ export function useQuestions() {
     }
   }, [notify]);
 
+  const handleAddAlternative = useCallback(
+    async (questionId: string, description: string, correct: boolean) => {
+      notify('Saving...');
+      try {
+        const updated = await questionsApi.addAlternative(questionId, { description, correct });
+        setQuestions((prev) => prev.map((q) => (q.id === questionId ? updated : q)));
+        setAddAlternativeTarget(null);
+        notify('Alternative added!');
+      } catch (e: unknown) {
+        notify((e as Error).message ?? 'Failed to add alternative', 'error');
+      }
+    },
+    [notify],
+  );
+
   const handleDeleteAlternative = useCallback(async (question: Question, altId: string) => {
     const alt = question.alternatives.find((a) => a.id === altId);
     if (!alt) return;
@@ -150,10 +166,13 @@ export function useQuestions() {
     setEditStatementTarget,
     editAlternativeTarget,
     setEditAlternativeTarget,
+    addAlternativeTarget,
+    setAddAlternativeTarget,
     deleteTarget,
     setDeleteTarget,
 
     handleCreateQuestion,
+    handleAddAlternative,
     handleUpdateStatement,
     handleUpdateAlternativeDescription,
     handleToggleCorrect,
