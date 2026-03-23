@@ -37,8 +37,21 @@ export function useGenerateProofsModal({ examId, examTitle, onClose, onNotify }:
   const [teacher, setTeacher] = useState('');
   const [date, setDate] = useState(today);
   const [institution, setInstitution] = useState('');
+  const [examValue, setExamValue] = useState('');
+  const [logoBase64, setLogoBase64] = useState<string | undefined>(undefined);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const handleLogoChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) { setLogoBase64(undefined); return; }
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result as string;
+      setLogoBase64(result.split(',')[1]);
+    };
+    reader.readAsDataURL(file);
+  }, []);
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
@@ -63,6 +76,8 @@ export function useGenerateProofsModal({ examId, examTitle, onClose, onNotify }:
             teacher: teacher.trim(),
             date: date.trim(),
             institution: institution.trim() || undefined,
+            examValue: examValue.trim() || undefined,
+            logoBase64,
           },
         };
 
@@ -83,7 +98,7 @@ export function useGenerateProofsModal({ examId, examTitle, onClose, onNotify }:
         setLoading(false);
       }
     },
-    [countStr, discipline, teacher, date, institution, examId, examTitle, onClose, onNotify],
+    [countStr, discipline, teacher, date, institution, examValue, logoBase64, examId, examTitle, onClose, onNotify],
   );
 
   return {
@@ -92,6 +107,9 @@ export function useGenerateProofsModal({ examId, examTitle, onClose, onNotify }:
     teacher, setTeacher,
     date, setDate,
     institution, setInstitution,
+    examValue, setExamValue,
+    logoBase64,
+    handleLogoChange,
     loading,
     error,
     handleSubmit,

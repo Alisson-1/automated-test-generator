@@ -3,6 +3,8 @@ export interface ProofHeader {
   teacher: string;
   date: string;
   institution?: string;
+  examValue?: string;
+  logoBase64?: string;
 }
 
 export interface GenerateProofsDTO {

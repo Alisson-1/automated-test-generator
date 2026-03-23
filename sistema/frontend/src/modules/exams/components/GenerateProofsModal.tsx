@@ -16,6 +16,8 @@ export function GenerateProofsModal({ exam, onClose, onNotify }: GenerateProofsM
     teacher, setTeacher,
     date, setDate,
     institution, setInstitution,
+    examValue, setExamValue,
+    handleLogoChange,
     loading,
     error,
     handleSubmit,
@@ -82,6 +84,33 @@ export function GenerateProofsModal({ exam, onClose, onNotify }: GenerateProofsM
             value={date}
             onChange={(e) => setDate(e.target.value)}
             className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+          />
+        </div>
+
+        <div>
+          <label className="mb-1 block text-sm font-medium text-slate-700">
+            Exam Value{' '}
+            <span className="font-normal text-slate-400">(optional)</span>
+          </label>
+          <input
+            type="text"
+            value={examValue}
+            onChange={(e) => setExamValue(e.target.value)}
+            placeholder="e.g. 10"
+            className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+          />
+        </div>
+
+        <div>
+          <label className="mb-1 block text-sm font-medium text-slate-700">
+            Logo Image{' '}
+            <span className="font-normal text-slate-400">(optional)</span>
+          </label>
+          <input
+            type="file"
+            accept="image/png,image/jpeg"
+            onChange={handleLogoChange}
+            className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-900 file:mr-3 file:rounded file:border-0 file:bg-slate-100 file:px-2 file:py-1 file:text-xs file:font-medium file:text-slate-700 hover:file:bg-slate-200"
           />
         </div>
 

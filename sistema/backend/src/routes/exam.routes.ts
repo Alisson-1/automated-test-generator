@@ -56,6 +56,8 @@ const generateProofsSchema = z.object({
     teacher: z.string().min(1, 'Teacher is required'),
     date: z.string().min(1, 'Date is required'),
     institution: z.string().optional(),
+    examValue: z.string().optional(),
+    logoBase64: z.string().optional(),
   }),
 });
 

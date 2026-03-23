@@ -79,26 +79,96 @@ function writeFooter(doc: PDFDoc, proofNumber: number): void {
     });
 }
 
+function writeHeader(doc: PDFDoc, exam: Exam, header: ProofHeader): void {
+  const { left, right } = doc.page.margins;
+  const contentWidth = doc.page.width - left - right;
+  const startX = left;
+  const startY = doc.y;
+
+  const hasLogo = !!header.logoBase64;
+  const logoColW = hasLogo ? 85 : 0;
+  const rightX = startX + logoColW;
+  const rightW = contentWidth - logoColW;
+
+  const row1H = 26;
+  const row2H = 20;
+  const row3H = 20;
+  const row4H = 32;
+  const upperH = row1H + row2H + row3H;
+
+  doc.strokeColor('#000000').lineWidth(0.5);
+
+  if (hasLogo) {
+    doc.rect(startX, startY, logoColW, upperH).stroke();
+    try {
+      const imgBuf = Buffer.from(header.logoBase64!, 'base64');
+      doc.image(imgBuf, startX + 3, startY + 3, { fit: [logoColW - 6, upperH - 6] });
+    } catch { }
+  }
+
+  doc.rect(rightX, startY, rightW, row1H).stroke();
+  const row1Text = (header.institution || exam.title).toUpperCase();
+  doc.fontSize(11).font('Helvetica-Bold').fillColor('#000000')
+    .text(row1Text, rightX + 4, startY + (row1H - 11) / 2, {
+      width: rightW - 8, align: 'center', lineBreak: false,
+    });
+
+  const row2Y = startY + row1H;
+  doc.rect(rightX, row2Y, rightW, row2H).stroke();
+  doc.fontSize(9).font('Helvetica').fillColor('#000000')
+    .text(`DISCIPLINE: ${header.discipline}`, rightX + 4, row2Y + (row2H - 9) / 2, {
+      width: rightW - 8, lineBreak: false,
+    });
+
+  const row3Y = row2Y + row2H;
+  const profW = Math.round(rightW * 0.58);
+  const dateW = rightW - profW;
+  doc.rect(rightX, row3Y, profW, row3H).stroke();
+  doc.rect(rightX + profW, row3Y, dateW, row3H).stroke();
+  doc.fontSize(9).font('Helvetica').fillColor('#000000')
+    .text(`PROF.: ${header.teacher}`, rightX + 4, row3Y + (row3H - 9) / 2, {
+      width: profW - 8, lineBreak: false,
+    });
+  const dateParts = header.date ? header.date.split('-') : [];
+  const dateStr =
+    dateParts.length === 3
+      ? `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`
+      : (header.date || '___/___/___');
+  doc.fontSize(9).font('Helvetica').fillColor('#000000')
+    .text(`DATE: ${dateStr}`, rightX + profW + 4, row3Y + (row3H - 9) / 2, {
+      width: dateW - 8, lineBreak: false,
+    });
+
+  const row4Y = startY + upperH;
+  const gradeW = Math.round(contentWidth * 0.38);
+  const valorW = contentWidth - gradeW;
+  doc.rect(startX, row4Y, gradeW, row4H).stroke();
+  doc.rect(startX + gradeW, row4Y, valorW, row4H).stroke();
+  doc.fontSize(9).font('Helvetica').fillColor('#000000')
+    .text('GRADE: _______________________', startX + 4, row4Y + (row4H - 9) / 2, {
+      width: gradeW - 8, lineBreak: false,
+    });
+  const examValueLabel = header.examValue ? `EXAM VALUE: ${header.examValue}` : 'EXAM VALUE:';
+  doc.fontSize(9).font('Helvetica').fillColor('#000000')
+    .text(examValueLabel, startX + gradeW + 4, row4Y + (row4H - 9) / 2, {
+      width: valorW - 8, lineBreak: false,
+    });
+
+  doc.y = row4Y + row4H + 12;
+  doc.x = left;
+
+  if (header.institution) {
+    doc.fontSize(13).font('Helvetica-Bold').fillColor('#000000')
+      .text(exam.title, { align: 'center', width: contentWidth });
+    doc.moveDown(0.4);
+  }
+}
+
 function writeProof(doc: PDFDoc, proof: ProofData, exam: Exam, header: ProofHeader): void {
   const { left, right } = doc.page.margins;
   const contentWidth = doc.page.width - left - right;
 
-  if (header.institution) {
-    doc.fontSize(10).fillColor('#444444').font('Helvetica').text(header.institution, { align: 'center', width: contentWidth });
-    doc.moveDown(0.3);
-  }
-
-  doc.fontSize(14).fillColor('#000000').font('Helvetica-Bold').text(exam.title, { align: 'center', width: contentWidth });
-  doc.moveDown(0.4);
-
-  doc
-    .fontSize(10)
-    .font('Helvetica')
-    .text(
-      `Discipline: ${header.discipline}   |   Teacher: ${header.teacher}   |   Date: ${header.date}`,
-      { align: 'center', width: contentWidth },
-    );
-  doc.moveDown(0.8);
+  writeHeader(doc, exam, header);
 
   doc
     .moveTo(left, doc.y)
