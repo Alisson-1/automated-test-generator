@@ -1,5 +1,6 @@
 import { CheckCircle2, Circle, Pencil, Trash2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useAlternativeItem } from '../hooks/useAlternativeItem';
 import type { Alternative } from '../types';
 
 interface AlternativeItemProps {
@@ -11,7 +12,7 @@ interface AlternativeItemProps {
 }
 
 export function AlternativeItem({ alternative, index, onToggleCorrect, onEdit, onDelete }: AlternativeItemProps) {
-  const letter = String.fromCharCode(65 + index);
+  const { letter } = useAlternativeItem(index);
 
   return (
     <div className="group flex items-center gap-3 rounded-md border border-slate-200 bg-white px-3 py-2.5">

@@ -1,66 +1,25 @@
-import { useState } from 'react';
 import { Plus, Trash2 } from 'lucide-react';
 import { Modal } from './Modal';
-import type { AlternativeFormItem, CreateQuestionInput } from '../types';
+import { useCreateQuestionModal } from '../hooks/useCreateQuestionModal';
+import type { CreateQuestionInput } from '../types';
 
 interface CreateQuestionModalProps {
   onSave: (data: CreateQuestionInput) => void;
   onClose: () => void;
 }
 
-const emptyAlternative = (): AlternativeFormItem => ({ description: '', correct: false });
-
 export function CreateQuestionModal({ onSave, onClose }: CreateQuestionModalProps) {
-  const [statement, setStatement] = useState('');
-  const [alternatives, setAlternatives] = useState<AlternativeFormItem[]>([
-    emptyAlternative(),
-    emptyAlternative(),
-  ]);
-  const [error, setError] = useState<string | null>(null);
-
-  const updateAlternative = (index: number, patch: Partial<AlternativeFormItem>) => {
-    setAlternatives((prev) => prev.map((a, i) => (i === index ? { ...a, ...patch } : a)));
-  };
-
-  const addAlternative = () => {
-    setAlternatives((prev) => [...prev, emptyAlternative()]);
-  };
-
-  const removeAlternative = (index: number) => {
-    setAlternatives((prev) => prev.filter((_, i) => i !== index));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-
-    if (!statement.trim()) {
-      setError('Statement is required.');
-      return;
-    }
-    if (alternatives.length < 2) {
-      setError('The question must have at least 2 alternatives.');
-      return;
-    }
-    if (alternatives.some((a) => !a.description.trim())) {
-      setError('All alternatives must have a description.');
-      return;
-    }
-    if (alternatives.filter((a) => a.correct).length !== 1) {
-      setError('Select exactly one correct alternative.');
-      return;
-    }
-    const descriptions = alternatives.map((a) => a.description.trim().toLowerCase());
-    if (descriptions.length !== new Set(descriptions).size) {
-      setError('Alternatives must have unique descriptions.');
-      return;
-    }
-
-    onSave({
-      statement: statement.trim(),
-      alternatives: alternatives.map((a) => ({ description: a.description.trim(), correct: a.correct })),
-    });
-  };
+  const {
+    statement,
+    setStatement,
+    alternatives,
+    error,
+    updateAlternative,
+    setCorrectAlternative,
+    addAlternative,
+    removeAlternative,
+    handleSubmit,
+  } = useCreateQuestionModal({ onSave });
 
   return (
     <Modal title="New Question" onClose={onClose}>
@@ -99,11 +58,7 @@ export function CreateQuestionModal({ onSave, onClose }: CreateQuestionModalProp
                       type="radio"
                       name="correct-alternative"
                       checked={alt.correct}
-                      onChange={() =>
-                        setAlternatives((prev) =>
-                          prev.map((a, idx) => ({ ...a, correct: idx === i })),
-                        )
-                      }
+                      onChange={() => setCorrectAlternative(i)}
                       className="accent-emerald-500"
                     />
                     Correct

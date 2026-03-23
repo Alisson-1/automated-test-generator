@@ -1,5 +1,6 @@
 import { Pencil, Trash2 } from 'lucide-react';
 import { AlternativeItem } from './AlternativeItem';
+import { useQuestionCard } from '../hooks/useQuestionCard';
 import type { Question } from '../types';
 
 interface QuestionCardProps {
@@ -19,8 +20,7 @@ export function QuestionCard({
   onToggleCorrect,
   onDeleteAlternative,
 }: QuestionCardProps) {
-  const formattedDate = (iso: string) =>
-    new Date(iso).toLocaleDateString('pt-BR');
+  const { formatDate } = useQuestionCard();
 
   return (
     <div className="rounded-lg border border-slate-200 bg-white shadow-sm">
@@ -69,7 +69,7 @@ export function QuestionCard({
         </div>
 
         <p className="mt-3 text-xs text-slate-400">
-          Created: {formattedDate(question.createdAt)} | Updated: {formattedDate(question.updatedAt)}
+          Created: {formatDate(question.createdAt)} | Updated: {formatDate(question.updatedAt)}
         </p>
       </div>
     </div>

@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import { Modal } from './Modal';
+import { useEditStatementModal } from '../hooks/useEditStatementModal';
 
 interface EditStatementModalProps {
   questionId: string;
@@ -9,12 +9,11 @@ interface EditStatementModalProps {
 }
 
 export function EditStatementModal({ questionId, initialStatement, onSave, onClose }: EditStatementModalProps) {
-  const [statement, setStatement] = useState(initialStatement);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (statement.trim()) onSave(questionId, statement.trim());
-  };
+  const { statement, setStatement, isValid, handleSubmit } = useEditStatementModal({
+    initialStatement,
+    questionId,
+    onSave,
+  });
 
   return (
     <Modal title="Edit Statement" onClose={onClose}>
@@ -39,7 +38,7 @@ export function EditStatementModal({ questionId, initialStatement, onSave, onClo
           </button>
           <button
             type="submit"
-            disabled={!statement.trim() || statement.trim() === initialStatement}
+            disabled={!isValid}
             className="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700 transition-colors disabled:cursor-not-allowed disabled:opacity-50"
           >
             Save

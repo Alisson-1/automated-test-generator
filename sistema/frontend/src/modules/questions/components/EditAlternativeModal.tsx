@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import { Modal } from './Modal';
+import { useEditAlternativeModal } from '../hooks/useEditAlternativeModal';
 
 interface EditAlternativeModalProps {
   questionId: string;
@@ -16,12 +16,12 @@ export function EditAlternativeModal({
   onSave,
   onClose,
 }: EditAlternativeModalProps) {
-  const [description, setDescription] = useState(initialDescription);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (description.trim()) onSave(questionId, altId, description.trim());
-  };
+  const { description, setDescription, isValid, handleSubmit } = useEditAlternativeModal({
+    initialDescription,
+    questionId,
+    altId,
+    onSave,
+  });
 
   return (
     <Modal title="Edit Alternative" onClose={onClose}>
@@ -46,7 +46,7 @@ export function EditAlternativeModal({
           </button>
           <button
             type="submit"
-            disabled={!description.trim() || description.trim() === initialDescription}
+            disabled={!isValid}
             className="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700 transition-colors disabled:cursor-not-allowed disabled:opacity-50"
           >
             Save
