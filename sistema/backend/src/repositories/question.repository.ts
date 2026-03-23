@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { Question, CreateQuestionDTO } from '../types/question.types';
 
-const DATA_FILE = path.resolve(__dirname, '../../data/questions.json');
+const DATA_FILE = process.env.QUESTIONS_DATA_FILE ?? path.resolve(__dirname, '../../data/questions.json');
 
 function ensureDataFile(): void {
   const dir = path.dirname(DATA_FILE);

@@ -6,7 +6,7 @@ import path from 'path';
 import app from '../app';
 import { Question } from '../types/question.types';
 
-const DATA_FILE = path.resolve(__dirname, '../../data/questions.json');
+const DATA_FILE = process.env.QUESTIONS_DATA_FILE ?? path.resolve(__dirname, '../../data/questions.json');
 
 interface ApiResponse {
   status: number;
@@ -168,4 +168,35 @@ Then('the last created question should no longer exist in the repository', funct
   const questions = JSON.parse(fs.readFileSync(DATA_FILE, 'utf-8')) as Question[];
   const found = questions.find((q) => q.id === lastCreatedQuestionId);
   assert.strictEqual(found, undefined, 'Question should have been deleted from the repository');
+});
+
+When('the teacher sends a GET request to {string}', async function (endpoint: string) {
+  const res = await request(app).get(endpoint);
+  response = { status: res.status, body: res.body };
+});
+
+When('the teacher sends a POST request to the last created question at {string} with:', async function (endpointTemplate: string, docString: string) {
+  const endpoint = endpointTemplate.replace(':id', lastCreatedQuestionId);
+  const body = JSON.parse(docString);
+  const res = await request(app).post(endpoint).send(body).set('Content-Type', 'application/json');
+  response = { status: res.status, body: res.body };
+});
+
+Then('the response body should contain an empty list of questions', function () {
+  const data = response.body.data as unknown[];
+  assert.ok(Array.isArray(data), 'Response data should be an array');
+  assert.strictEqual(data.length, 0, 'Response data should be an empty array');
+});
+
+Then('the response body should contain {int} questions', function (expectedCount: number) {
+  const data = response.body.data as unknown[];
+  assert.ok(Array.isArray(data), 'Response data should be an array');
+  assert.strictEqual(data.length, expectedCount, `Expected ${expectedCount} questions but got ${data.length}`);
+});
+
+Then('the response question should have exactly 1 correct alternative', function () {
+  const data = response.body.data as Record<string, unknown>;
+  const alternatives = data.alternatives as Array<Record<string, unknown>>;
+  const correctCount = alternatives.filter((a) => a.correct).length;
+  assert.strictEqual(correctCount, 1, `Expected exactly 1 correct alternative but found ${correctCount}`);
 });

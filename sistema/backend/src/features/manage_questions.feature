@@ -220,3 +220,61 @@ Feature: Manage Questions
     Given a question already exists with statement "A question for alternative deletion lookup"
     When the teacher sends a DELETE request to "/api/questions/:id/alternatives/non-existent-alt-id"
     Then the response status should be 404
+
+  # GET /api/questions
+
+  Scenario: Successfully list all questions when repository is empty
+    When the teacher sends a GET request to "/api/questions"
+    Then the response status should be 200
+    And the response body should contain an empty list of questions
+
+  Scenario: Successfully list all questions when questions exist
+    Given a question already exists with statement "What is 1 + 1?"
+    And a question already exists with statement "What is the capital of Brazil?"
+    When the teacher sends a GET request to "/api/questions"
+    Then the response status should be 200
+    And the response body should contain 2 questions
+
+  # POST /api/questions/:id/alternatives
+
+  Scenario: Successfully add a non-correct alternative to a question
+    Given a question already exists with statement "What is the color of the sky?"
+    When the teacher sends a POST request to the last created question at "/api/questions/:id/alternatives" with:
+      """json
+      { "description": "Green", "correct": false }
+      """
+    Then the response status should be 201
+    And the response question should have 3 alternatives
+
+  Scenario: Successfully add a correct alternative, demoting the existing correct one
+    Given a question already exists with statement "What is 5 times 5?"
+    When the teacher sends a POST request to the last created question at "/api/questions/:id/alternatives" with:
+      """json
+      { "description": "25", "correct": true }
+      """
+    Then the response status should be 201
+    And the response question should have 3 alternatives
+    And the response question should have exactly 1 correct alternative
+
+  Scenario: Fail to add an alternative to a non-existent question
+    When the teacher sends a POST request to "/api/questions/non-existent-id/alternatives" with:
+      """json
+      { "description": "Some option", "correct": false }
+      """
+    Then the response status should be 404
+
+  Scenario: Fail to add an alternative with a duplicate description
+    Given a question already exists with statement "Which planet is closest to the sun?"
+    When the teacher sends a POST request to the last created question at "/api/questions/:id/alternatives" with:
+      """json
+      { "description": "Option A", "correct": false }
+      """
+    Then the response status should be 400
+
+  Scenario: Fail to add an alternative without a description
+    Given a question already exists with statement "What is the speed of light?"
+    When the teacher sends a POST request to the last created question at "/api/questions/:id/alternatives" with:
+      """json
+      { "correct": false }
+      """
+    Then the response status should be 400
