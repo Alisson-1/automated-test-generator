@@ -1,4 +1,4 @@
-import { Pencil, Trash2, Hash, Layers } from 'lucide-react';
+import { Pencil, Trash2, Hash, Layers, FileDown } from 'lucide-react';
 import { useExamCard } from '../hooks/useExamCard';
 import type { Exam } from '../types';
 import type { Question } from '@/service/endpoint/questions';
@@ -8,9 +8,10 @@ interface ExamCardProps {
   allQuestions: Question[];
   onEdit: (exam: Exam) => void;
   onDelete: (exam: Exam) => void;
+  onGenerate: (exam: Exam) => void;
 }
 
-export function ExamCard({ exam, allQuestions, onEdit, onDelete }: ExamCardProps) {
+export function ExamCard({ exam, allQuestions, onEdit, onDelete, onGenerate }: ExamCardProps) {
   const { combinations, combinationsLabel, formatDate } = useExamCard(exam, allQuestions);
 
   return (
@@ -23,6 +24,15 @@ export function ExamCard({ exam, allQuestions, onEdit, onDelete }: ExamCardProps
           <p className="text-sm font-medium text-slate-900">{exam.title}</p>
         </div>
         <div className="ml-3 flex shrink-0 items-center gap-1">
+          <button
+            type="button"
+            onClick={() => onGenerate(exam)}
+            aria-label="Generate proofs"
+            title="Generate proofs PDF"
+            className="rounded p-1.5 text-slate-400 hover:bg-green-50 hover:text-green-600 transition-colors"
+          >
+            <FileDown className="h-4 w-4" />
+          </button>
           <button
             type="button"
             onClick={() => onEdit(exam)}

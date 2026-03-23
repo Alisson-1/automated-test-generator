@@ -47,6 +47,7 @@ export function useExams() {
   const [showCreate, setShowCreate] = useState(false);
   const [editTarget, setEditTarget] = useState<EditExamTarget | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Exam | null>(null);
+  const [generateTarget, setGenerateTarget] = useState<Exam | null>(null);
 
   const notify = useCallback((message: string, type: Notification['type'] = 'success') => {
     setNotification({ message, type });
@@ -129,12 +130,15 @@ export function useExams() {
     search,
     setSearch,
     notification,
+    notify,
     showCreate,
     setShowCreate,
     editTarget,
     setEditTarget,
     deleteTarget,
     setDeleteTarget,
+    generateTarget,
+    setGenerateTarget,
     handleCreateExam,
     handleUpdateExam,
     handleDeleteExam,

@@ -5,6 +5,7 @@ import { ExamList } from '../components/ExamList';
 import { CreateExamModal } from '../components/CreateExamModal';
 import { EditExamModal } from '../components/EditExamModal';
 import { DeleteExamModal } from '../components/DeleteExamModal';
+import { GenerateProofsModal } from '../components/GenerateProofsModal';
 
 export default function ExamsView() {
   const {
@@ -15,12 +16,15 @@ export default function ExamsView() {
     search,
     setSearch,
     notification,
+    notify,
     showCreate,
     setShowCreate,
     editTarget,
     setEditTarget,
     deleteTarget,
     setDeleteTarget,
+    generateTarget,
+    setGenerateTarget,
     handleCreateExam,
     handleUpdateExam,
     handleDeleteExam,
@@ -54,6 +58,7 @@ export default function ExamsView() {
           })
         }
         onDelete={(exam) => setDeleteTarget(exam)}
+        onGenerate={(exam) => setGenerateTarget(exam)}
       />
 
       {showCreate && (
@@ -78,6 +83,14 @@ export default function ExamsView() {
           exam={deleteTarget}
           onConfirm={handleDeleteExam}
           onClose={() => setDeleteTarget(null)}
+        />
+      )}
+
+      {generateTarget && (
+        <GenerateProofsModal
+          exam={generateTarget}
+          onClose={() => setGenerateTarget(null)}
+          onNotify={notify}
         />
       )}
 

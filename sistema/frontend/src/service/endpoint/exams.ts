@@ -34,6 +34,23 @@ async function request<T>(url: string, options?: RequestInit): Promise<T> {
   return body.data as T;
 }
 
+export interface ProofHeader {
+  discipline: string;
+  teacher: string;
+  date: string;
+  institution?: string;
+}
+
+export interface GenerateProofsInput {
+  count: number;
+  header: ProofHeader;
+}
+
+export interface GenerateProofsResult {
+  pdf: string;
+  csv: string;
+}
+
 export const examsApi = {
   getAll: () => request<Exam[]>(BASE),
 
@@ -47,4 +64,10 @@ export const examsApi = {
 
   delete: (id: string) =>
     request<void>(`${BASE}/${id}`, { method: 'DELETE' }),
+
+  generateProofs: (id: string, data: GenerateProofsInput) =>
+    request<GenerateProofsResult>(`${BASE}/${id}/generate-proofs`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
 };

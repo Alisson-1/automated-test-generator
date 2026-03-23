@@ -12,6 +12,7 @@ interface ExamListProps {
   onNewExam: () => void;
   onEdit: (exam: Exam) => void;
   onDelete: (exam: Exam) => void;
+  onGenerate: (exam: Exam) => void;
 }
 
 export function ExamList({
@@ -23,6 +24,7 @@ export function ExamList({
   onNewExam,
   onEdit,
   onDelete,
+  onGenerate,
 }: ExamListProps) {
   return (
     <div>
@@ -69,6 +71,7 @@ export function ExamList({
               allQuestions={allQuestions}
               onEdit={onEdit}
               onDelete={onDelete}
+              onGenerate={onGenerate}
             />
           ))}
         </div>

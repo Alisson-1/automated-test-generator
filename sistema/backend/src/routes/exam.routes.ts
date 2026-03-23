@@ -2,6 +2,8 @@ import { Router, Request, Response, NextFunction } from 'express';
 import { z } from 'zod';
 import { ExamController } from '../controllers/exam.controller';
 import { ExamService } from '../services/exam.service';
+import { ProofController } from '../controllers/proof.controller';
+import { ProofService } from '../services/proof.service';
 import { ExamRepository } from '../repositories/exam.repository';
 import { QuestionRepository } from '../repositories/question.repository';
 import { ValidationError } from '../utils/errors';
@@ -47,15 +49,28 @@ function validateBody(schema: z.ZodTypeAny) {
   };
 }
 
+const generateProofsSchema = z.object({
+  count: z.number().int().min(1, 'Count must be at least 1').max(500, 'Count must be at most 500'),
+  header: z.object({
+    discipline: z.string().min(1, 'Discipline is required'),
+    teacher: z.string().min(1, 'Teacher is required'),
+    date: z.string().min(1, 'Date is required'),
+    institution: z.string().optional(),
+  }),
+});
+
 const examRepository = new ExamRepository();
 const questionRepository = new QuestionRepository();
 const examService = new ExamService(examRepository, questionRepository);
 const examController = new ExamController(examService);
+const proofService = new ProofService(examRepository, questionRepository);
+const proofController = new ProofController(proofService);
 
 router.get('/', examController.getAll);
 router.get('/:id', examController.getById);
 router.post('/', validateBody(createExamSchema), examController.create);
 router.patch('/:id', validateBody(updateExamSchema), examController.update);
 router.delete('/:id', examController.delete);
+router.post('/:id/generate-proofs', validateBody(generateProofsSchema), proofController.generate);
 
 export default router;
