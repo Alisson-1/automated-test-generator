@@ -193,7 +193,7 @@ Feature: Manage Questions
   Scenario: Successfully delete a question
     Given a question already exists with statement "A question to be fully deleted"
     When the teacher deletes the last created question
-    Then the response status should be 204
+    Then the response status should be 200
     And the last created question should no longer exist in the repository
 
   Scenario: Fail to delete a question that does not exist

@@ -17,10 +17,20 @@
         "id": "cb5dfb16-fe7c-4f06-88f2-d9f10ad48ab0-2",
         "description": "Mercury",
         "correct": true
+      },
+      {
+        "id": "4d75325d-89ef-489c-ae9c-ad826ed7d5ee",
+        "description": "A",
+        "correct": false
+      },
+      {
+        "id": "891057cb-a3a9-4ef9-b33d-d0b9be34d206",
+        "description": "b",
+        "correct": false
       }
     ],
     "createdAt": "2026-03-23T11:11:57.468Z",
-    "updatedAt": "2026-03-23T11:11:57.468Z"
+    "updatedAt": "2026-03-23T23:19:13.800Z"
   },
   {
     "id": "532903b5-da49-4f87-822b-99d7b06a2a56",
