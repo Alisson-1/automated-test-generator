@@ -13,10 +13,15 @@
     "id": "07a34622-47a1-4e9a-b9af-8b36541c2ff9",
     "title": "Prova de Matematica",
     "questionIds": [
-      "f295cc19-53ea-4112-b768-dcab24200ba3"
+      "f295cc19-53ea-4112-b768-dcab24200ba3",
+      "cb5dfb16-fe7c-4f06-88f2-d9f10ad48ab0",
+      "532903b5-da49-4f87-822b-99d7b06a2a56",
+      "13ee94a5-efdf-4672-9955-ac8ef0892d89",
+      "97836506-bb73-4f31-b513-b432b47c84f8",
+      "1f161fe6-acd1-4867-be4e-59c801bd7936"
     ],
     "identifierMode": "powers-of-2",
     "createdAt": "2026-03-23T20:32:13.149Z",
-    "updatedAt": "2026-03-23T21:23:44.369Z"
+    "updatedAt": "2026-03-23T22:26:49.506Z"
   }
 ]

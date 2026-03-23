@@ -32,7 +32,7 @@ function base64ToArrayBuffer(base64: string): ArrayBuffer {
 export function useGenerateProofsModal({ examId, examTitle, onClose, onNotify }: Props) {
   const today = new Date().toISOString().split('T')[0];
 
-  const [count, setCount] = useState(1);
+  const [countStr, setCountStr] = useState('1');
   const [discipline, setDiscipline] = useState('');
   const [teacher, setTeacher] = useState('');
   const [date, setDate] = useState(today);
@@ -45,6 +45,11 @@ export function useGenerateProofsModal({ examId, examTitle, onClose, onNotify }:
       e.preventDefault();
       setError(null);
 
+      const count = parseInt(countStr, 10);
+      if (isNaN(count) || count < 1 || count > 500) {
+        setError('Count must be a number between 1 and 500');
+        return;
+      }
       if (!discipline.trim()) { setError('Discipline is required'); return; }
       if (!teacher.trim()) { setError('Teacher is required'); return; }
       if (!date.trim()) { setError('Date is required'); return; }
@@ -78,11 +83,11 @@ export function useGenerateProofsModal({ examId, examTitle, onClose, onNotify }:
         setLoading(false);
       }
     },
-    [count, discipline, teacher, date, institution, examId, examTitle, onClose, onNotify],
+    [countStr, discipline, teacher, date, institution, examId, examTitle, onClose, onNotify],
   );
 
   return {
-    count, setCount,
+    countStr, setCountStr,
     discipline, setDiscipline,
     teacher, setTeacher,
     date, setDate,

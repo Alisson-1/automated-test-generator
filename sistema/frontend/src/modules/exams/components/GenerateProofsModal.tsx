@@ -11,7 +11,7 @@ interface GenerateProofsModalProps {
 
 export function GenerateProofsModal({ exam, onClose, onNotify }: GenerateProofsModalProps) {
   const {
-    count, setCount,
+    countStr, setCountStr,
     discipline, setDiscipline,
     teacher, setTeacher,
     date, setDate,
@@ -32,8 +32,8 @@ export function GenerateProofsModal({ exam, onClose, onNotify }: GenerateProofsM
             type="number"
             min={1}
             max={500}
-            value={count}
-            onChange={(e) => setCount(Math.max(1, parseInt(e.target.value) || 1))}
+            value={countStr}
+            onChange={(e) => setCountStr(e.target.value)}
             className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
           />
         </div>

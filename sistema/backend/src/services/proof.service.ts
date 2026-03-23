@@ -67,7 +67,7 @@ function buildProofs(exam: Exam, questions: Question[], count: number): ProofDat
 
 function writeFooter(doc: PDFDoc, proofNumber: number): void {
   const { left, right, bottom } = doc.page.margins;
-  const footerY = doc.page.height - bottom + 8;
+  const footerY = doc.page.height - bottom - 16;
   const contentWidth = doc.page.width - left - right;
   doc
     .fontSize(9)
@@ -83,7 +83,6 @@ function writeProof(doc: PDFDoc, proof: ProofData, exam: Exam, header: ProofHead
   const { left, right } = doc.page.margins;
   const contentWidth = doc.page.width - left - right;
 
-  // Exam header
   if (header.institution) {
     doc.fontSize(10).fillColor('#444444').font('Helvetica').text(header.institution, { align: 'center', width: contentWidth });
     doc.moveDown(0.3);
@@ -109,7 +108,6 @@ function writeProof(doc: PDFDoc, proof: ProofData, exam: Exam, header: ProofHead
     .stroke();
   doc.moveDown(0.8);
 
-  // Questions
   const altLabel =
     exam.identifierMode === 'letters'
       ? (n: number) => String.fromCharCode(65 + n)
@@ -141,7 +139,6 @@ function writeProof(doc: PDFDoc, proof: ProofData, exam: Exam, header: ProofHead
     doc.moveDown(1.2);
   });
 
-  // Student info section
   doc
     .moveTo(left, doc.y)
     .lineTo(doc.page.width - right, doc.y)
@@ -174,7 +171,6 @@ async function buildPDF(proofs: ProofData[], exam: Exam, header: ProofHeader): P
     doc.on('pageAdded', () => {
       if (currentProofNumber === 0) return;
       writeFooter(doc, currentProofNumber);
-      // Reset cursor to top of content area after writing footer
       doc.y = doc.page.margins.top;
       doc.x = doc.page.margins.left;
       doc.fillColor('#000000').fontSize(11);
