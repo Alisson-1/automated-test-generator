@@ -278,3 +278,111 @@ Feature: Manage Questions
       { "correct": false }
       """
     Then the response status should be 400
+
+  Scenario: Successfully import multiple questions in bulk
+    When the teacher sends a POST request to "/api/questions/bulk" with:
+      """json
+      {
+        "questions": [
+          {
+            "statement": "What is 1 + 1?",
+            "alternatives": [
+              { "description": "1", "correct": false },
+              { "description": "2", "correct": true }
+            ]
+          },
+          {
+            "statement": "What is the capital of France?",
+            "alternatives": [
+              { "description": "London", "correct": false },
+              { "description": "Paris", "correct": true }
+            ]
+          }
+        ]
+      }
+      """
+    Then the response status should be 207
+    And the bulk result should have 2 created questions and 0 failures
+
+  Scenario: Partially import questions, skipping invalid ones
+    When the teacher sends a POST request to "/api/questions/bulk" with:
+      """json
+      {
+        "questions": [
+          {
+            "statement": "Valid question",
+            "alternatives": [
+              { "description": "Option A", "correct": true },
+              { "description": "Option B", "correct": false }
+            ]
+          },
+          {
+            "statement": "Invalid: no correct alternative",
+            "alternatives": [
+              { "description": "Option A", "correct": false },
+              { "description": "Option B", "correct": false }
+            ]
+          }
+        ]
+      }
+      """
+    Then the response status should be 207
+    And the bulk result should have 1 created questions and 1 failures
+
+  Scenario: Fail bulk import when question duplicates an existing statement
+    Given a question already exists with statement "Already exists"
+    When the teacher sends a POST request to "/api/questions/bulk" with:
+      """json
+      {
+        "questions": [
+          {
+            "statement": "Already exists",
+            "alternatives": [
+              { "description": "Yes", "correct": true },
+              { "description": "No", "correct": false }
+            ]
+          },
+          {
+            "statement": "New unique question",
+            "alternatives": [
+              { "description": "Option A", "correct": true },
+              { "description": "Option B", "correct": false }
+            ]
+          }
+        ]
+      }
+      """
+    Then the response status should be 207
+    And the bulk result should have 1 created questions and 1 failures
+
+  Scenario: Fail bulk import when two questions in the batch share the same statement
+    When the teacher sends a POST request to "/api/questions/bulk" with:
+      """json
+      {
+        "questions": [
+          {
+            "statement": "Duplicated statement",
+            "alternatives": [
+              { "description": "Option A", "correct": true },
+              { "description": "Option B", "correct": false }
+            ]
+          },
+          {
+            "statement": "Duplicated statement",
+            "alternatives": [
+              { "description": "Option X", "correct": true },
+              { "description": "Option Y", "correct": false }
+            ]
+          }
+        ]
+      }
+      """
+    Then the response status should be 207
+    And the bulk result should have 1 created questions and 1 failures
+
+  Scenario: Fail bulk import with empty questions array
+    When the teacher sends a POST request to "/api/questions/bulk" with:
+      """json
+      { "questions": [] }
+      """
+    Then the response status should be 400

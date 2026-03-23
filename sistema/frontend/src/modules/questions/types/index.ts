@@ -1,4 +1,4 @@
-export type { Alternative, Question, CreateQuestionInput } from '@/service/endpoint/questions';
+export type { Alternative, Question, CreateQuestionInput, BulkCreateResult } from '@/service/endpoint/questions';
 
 export interface AlternativeFormItem {
   description: string;

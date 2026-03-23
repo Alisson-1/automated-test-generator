@@ -7,6 +7,7 @@ import { EditAlternativeModal } from '../components/EditAlternativeModal';
 import { DeleteQuestionModal } from '../components/DeleteQuestionModal';
 import { CreateQuestionModal } from '../components/CreateQuestionModal';
 import { AddAlternativeModal } from '../components/AddAlternativeModal';
+import { BulkCreateModal } from '../components/BulkCreateModal';
 
 export default function QuestionsView() {
   const {
@@ -18,6 +19,8 @@ export default function QuestionsView() {
     notification,
     showCreate,
     setShowCreate,
+    showBulkCreate,
+    setShowBulkCreate,
     editStatementTarget,
     setEditStatementTarget,
     editAlternativeTarget,
@@ -27,6 +30,7 @@ export default function QuestionsView() {
     deleteTarget,
     setDeleteTarget,
     handleCreateQuestion,
+    handleBulkCreate,
     handleAddAlternative,
     handleUpdateStatement,
     handleUpdateAlternativeDescription,
@@ -53,6 +57,7 @@ export default function QuestionsView() {
         search={search}
         onSearchChange={setSearch}
         onNewQuestion={() => setShowCreate(true)}
+        onBulkCreate={() => setShowBulkCreate(true)}
         onEditStatement={(questionId, statement) => setEditStatementTarget({ questionId, statement })}
         onDeleteQuestion={(q) => setDeleteTarget(q)}
         onEditAlternative={(questionId, altId, description) =>
@@ -67,6 +72,13 @@ export default function QuestionsView() {
         <CreateQuestionModal
           onSave={handleCreateQuestion}
           onClose={() => setShowCreate(false)}
+        />
+      )}
+
+      {showBulkCreate && (
+        <BulkCreateModal
+          onSave={handleBulkCreate}
+          onClose={() => setShowBulkCreate(false)}
         />
       )}
 

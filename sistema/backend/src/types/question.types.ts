@@ -29,3 +29,8 @@ export interface UpdateStatementDTO {
 export interface UpdateAlternativeDescriptionDTO {
   description: string;
 }
+
+export interface BulkCreateResult {
+  created: Question[];
+  failed: { index: number; statement: string; error: string }[];
+}

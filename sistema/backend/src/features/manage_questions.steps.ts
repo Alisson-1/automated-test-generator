@@ -200,3 +200,12 @@ Then('the response question should have exactly 1 correct alternative', function
   const correctCount = alternatives.filter((a) => a.correct).length;
   assert.strictEqual(correctCount, 1, `Expected exactly 1 correct alternative but found ${correctCount}`);
 });
+
+Then('the bulk result should have {int} created questions and {int} failures', function (expectedCreated: number, expectedFailed: number) {
+  const data = response.body.data as { created: unknown[]; failed: unknown[] };
+  assert.ok(data, 'Response body should have a "data" field');
+  assert.ok(Array.isArray(data.created), 'data.created should be an array');
+  assert.ok(Array.isArray(data.failed), 'data.failed should be an array');
+  assert.strictEqual(data.created.length, expectedCreated, `Expected ${expectedCreated} created but got ${data.created.length}`);
+  assert.strictEqual(data.failed.length, expectedFailed, `Expected ${expectedFailed} failures but got ${data.failed.length}`);
+});

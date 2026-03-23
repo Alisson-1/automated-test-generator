@@ -1,6 +1,6 @@
 import { randomUUID } from 'crypto';
 import { QuestionRepository } from '../repositories/question.repository';
-import { CreateQuestionDTO, UpdateQuestionDTO, Question } from '../types/question.types';
+import { CreateQuestionDTO, UpdateQuestionDTO, Question, BulkCreateResult } from '../types/question.types';
 import { ConflictError, NotFoundError, ValidationError } from '../utils/errors';
 
 export class QuestionService {
@@ -174,5 +174,57 @@ export class QuestionService {
       alternatives: q.alternatives.filter((a) => a.id !== altId),
       updatedAt: now,
     }))!;
+  }
+
+  bulkCreate(items: CreateQuestionDTO[]): BulkCreateResult {
+    const created: Question[] = [];
+    const failed: BulkCreateResult['failed'] = [];
+    const createdStatements = new Set<string>();
+
+    for (let i = 0; i < items.length; i++) {
+      const data = items[i];
+      const statement = data.statement?.trim() ?? '';
+
+      try {
+        if (!data.alternatives || data.alternatives.length < 2) {
+          throw new ValidationError('A question must have at least 2 alternatives');
+        }
+        const correctCount = data.alternatives.filter((alt) => alt.correct).length;
+        if (correctCount !== 1) {
+          throw new ValidationError('A question must have exactly one correct alternative');
+        }
+        const descriptions = data.alternatives.map((alt) => alt.description.trim().toLowerCase());
+        if (descriptions.length !== new Set(descriptions).size) {
+          throw new ValidationError('Alternatives must have unique descriptions');
+        }
+
+        const statementNormalized = statement.toLowerCase();
+        if (createdStatements.has(statementNormalized)) {
+          throw new ConflictError('A question with this statement already exists');
+        }
+        const existing = this.repository.findAll();
+        if (existing.some((q) => q.statement.trim().toLowerCase() === statementNormalized)) {
+          throw new ConflictError('A question with this statement already exists');
+        }
+
+        const now = new Date().toISOString();
+        const question = this.repository.create({
+          ...data,
+          id: randomUUID(),
+          createdAt: now,
+          updatedAt: now,
+        });
+        created.push(question);
+        createdStatements.add(statementNormalized);
+      } catch (error: unknown) {
+        failed.push({
+          index: i,
+          statement,
+          error: error instanceof Error ? error.message : 'Unknown error',
+        });
+      }
+    }
+
+    return { created, failed };
   }
 }

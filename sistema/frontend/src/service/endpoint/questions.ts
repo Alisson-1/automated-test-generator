@@ -17,6 +17,11 @@ export interface CreateQuestionInput {
   alternatives: { description: string; correct: boolean }[];
 }
 
+export interface BulkCreateResult {
+  created: Question[];
+  failed: { index: number; statement: string; error: string }[];
+}
+
 const BASE = '/api/questions';
 
 async function request<T>(url: string, options?: RequestInit): Promise<T> {
@@ -65,4 +70,10 @@ export const questionsApi = {
 
   deleteAlternative: (questionId: string, altId: string) =>
     request<Question>(`${BASE}/${questionId}/alternatives/${altId}`, { method: 'DELETE' }),
+
+  bulkCreate: (questions: CreateQuestionInput[]) =>
+    request<BulkCreateResult>(
+      `${BASE}/bulk`,
+      { method: 'POST', body: JSON.stringify({ questions }) }
+    ),
 };

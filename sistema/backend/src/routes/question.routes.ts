@@ -32,6 +32,10 @@ const addAlternativeSchema = z.object({
   correct: z.boolean(),
 });
 
+const bulkCreateSchema = z.object({
+  questions: z.array(createQuestionSchema).min(1, 'At least one question is required'),
+});
+
 const updateStatementSchema = z.object({
   statement: z.string().min(1, 'Statement is required'),
 });
@@ -61,6 +65,7 @@ const questionController = new QuestionController(questionService);
 
 router.get('/', questionController.getAll);
 router.post('/', validateBody(createQuestionSchema), questionController.create);
+router.post('/bulk', validateBody(bulkCreateSchema), questionController.bulkCreate);
 
 router.post('/:id/alternatives', validateBody(addAlternativeSchema), questionController.addAlternative);
 router.patch('/:id', validateBody(updateQuestionSchema), questionController.updateQuestion);

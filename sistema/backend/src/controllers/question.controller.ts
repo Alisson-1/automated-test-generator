@@ -79,4 +79,13 @@ export class QuestionController {
       next(error);
     }
   };
+
+  bulkCreate = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const result = this.service.bulkCreate(req.body.questions);
+      res.status(207).json({ status: 'success', data: result });
+    } catch (error) {
+      next(error);
+    }
+  };
 }

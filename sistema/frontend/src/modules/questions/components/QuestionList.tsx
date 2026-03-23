@@ -1,4 +1,4 @@
-import { Search, Plus } from 'lucide-react';
+import { Search, Plus, Upload } from 'lucide-react';
 import { QuestionCard } from './QuestionCard';
 import type { Question } from '../types';
 
@@ -8,6 +8,7 @@ interface QuestionListProps {
   search: string;
   onSearchChange: (value: string) => void;
   onNewQuestion: () => void;
+  onBulkCreate: () => void;
   onEditStatement: (questionId: string, statement: string) => void;
   onDeleteQuestion: (question: Question) => void;
   onEditAlternative: (questionId: string, altId: string, description: string) => void;
@@ -22,6 +23,7 @@ export function QuestionList({
   search,
   onSearchChange,
   onNewQuestion,
+  onBulkCreate,
   onEditStatement,
   onDeleteQuestion,
   onEditAlternative,
@@ -38,6 +40,14 @@ export function QuestionList({
             {totalCount} {totalCount === 1 ? 'question' : 'questions'}
           </span>
         </div>
+        <button
+          type="button"
+          onClick={onBulkCreate}
+          className="flex items-center gap-1.5 rounded-md border border-slate-200 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors"
+        >
+          <Upload className="h-4 w-4" />
+          Import
+        </button>
         <button
           type="button"
           onClick={onNewQuestion}

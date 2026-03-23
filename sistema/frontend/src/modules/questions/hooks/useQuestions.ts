@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { questionsApi } from '@/service/endpoint/questions';
-import type { Question, CreateQuestionInput, EditStatementTarget, EditAlternativeTarget, AddAlternativeTarget } from '../types';
+import type { Question, CreateQuestionInput, BulkCreateResult, EditStatementTarget, EditAlternativeTarget, AddAlternativeTarget } from '../types';
 
 interface Notification {
   message: string;
@@ -18,6 +18,7 @@ export function useQuestions() {
   const [addAlternativeTarget, setAddAlternativeTarget] = useState<AddAlternativeTarget | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Question | null>(null);
   const [showCreate, setShowCreate] = useState(false);
+  const [showBulkCreate, setShowBulkCreate] = useState(false);
 
   const notify = useCallback((message: string, type: Notification['type'] = 'success') => {
     setNotification({ message, type });
@@ -129,6 +130,21 @@ export function useQuestions() {
     [notify],
   );
 
+  const handleBulkCreate = useCallback(async (questions: CreateQuestionInput[]): Promise<BulkCreateResult | null> => {
+    notify('Importing...');
+    try {
+      const result = await questionsApi.bulkCreate(questions);
+      if (result.created.length > 0) {
+        setQuestions((prev) => [...prev, ...result.created]);
+      }
+      notify(`${result.created.length} question(s) imported!`);
+      return result;
+    } catch (e: unknown) {
+      notify((e as Error).message ?? 'Failed to import questions', 'error');
+      return null;
+    }
+  }, [notify]);
+
   const handleDeleteAlternative = useCallback(async (question: Question, altId: string) => {
     const alt = question.alternatives.find((a) => a.id === altId);
     if (!alt) return;
@@ -162,6 +178,8 @@ export function useQuestions() {
 
     showCreate,
     setShowCreate,
+    showBulkCreate,
+    setShowBulkCreate,
     editStatementTarget,
     setEditStatementTarget,
     editAlternativeTarget,
@@ -172,6 +190,7 @@ export function useQuestions() {
     setDeleteTarget,
 
     handleCreateQuestion,
+    handleBulkCreate,
     handleAddAlternative,
     handleUpdateStatement,
     handleUpdateAlternativeDescription,
