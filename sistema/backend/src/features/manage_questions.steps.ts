@@ -13,8 +13,12 @@ interface ApiResponse {
   body: Record<string, unknown>;
 }
 
-let response: ApiResponse;
+let response: ApiResponse = { status: 0, body: {} };
 let lastCreatedQuestionId: string;
+
+export function setResponse(status: number, body: Record<string, unknown>): void {
+  response = { status, body };
+}
 
 Before(function () {
   if (fs.existsSync(DATA_FILE)) {
