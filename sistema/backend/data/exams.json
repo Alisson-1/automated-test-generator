@@ -3,19 +3,11 @@
     "id": "64f6a82f-49d5-49f4-96bb-456f719c63a5",
     "title": "Prova de Ciências",
     "questionIds": [
-      "532903b5-da49-4f87-822b-99d7b06a2a56",
-      "cb5dfb16-fe7c-4f06-88f2-d9f10ad48ab0",
-      "f295cc19-53ea-4112-b768-dcab24200ba3",
-      "13ee94a5-efdf-4672-9955-ac8ef0892d89",
-      "97836506-bb73-4f31-b513-b432b47c84f8",
-      "1f161fe6-acd1-4867-be4e-59c801bd7936",
-      "56742667-24f1-4822-9840-3d3b343337de",
-      "6f1b6a27-e42e-4b40-a7a8-faef37381976",
-      "99b9c10e-aa07-446e-87cb-78be2db217aa"
+      "97836506-bb73-4f31-b513-b432b47c84f8"
     ],
     "identifierMode": "letters",
     "createdAt": "2026-03-23T20:32:04.188Z",
-    "updatedAt": "2026-03-23T23:01:51.969Z"
+    "updatedAt": "2026-03-24T10:02:49.747Z"
   },
   {
     "id": "07a34622-47a1-4e9a-b9af-8b36541c2ff9",
