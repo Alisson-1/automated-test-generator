@@ -41,7 +41,7 @@ function computeAnswerKey(
     const correctLetters = alternatives
       .map((alt, i) => (alt.correct ? String.fromCharCode(65 + i) : null))
       .filter(Boolean) as string[];
-    return correctLetters.join(', ');
+    return correctLetters.join('/');
   }
   let sum = 0;
   alternatives.forEach((alt, i) => {
