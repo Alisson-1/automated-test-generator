@@ -6,7 +6,7 @@ export default function HomeView() {
 
   return (
     <main>
-      <h1>Sistema de Provas</h1>
+      <h1>Exam System</h1>
       <ApiStatus status={status} />
     </main>
   );
