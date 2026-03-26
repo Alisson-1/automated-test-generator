@@ -2,6 +2,13 @@
 
 Web system for creating and grading multiple-choice exams. Teachers manage questions, compose exams, generate individualized randomized PDF proofs with answer keys, and grade student responses.
 
+## Live Demo
+
+| | URL |
+|---|---|
+| Frontend | https://exam-generator-frontend.mangofield-411aaeaf.brazilsouth.azurecontainerapps.io/exams |
+| Backend (health) | https://exam-generator-backend.mangofield-411aaeaf.brazilsouth.azurecontainerapps.io/api/health |
+
 ## Features
 
 - **Question management** — create, edit, and delete questions with multiple alternatives; bulk import
